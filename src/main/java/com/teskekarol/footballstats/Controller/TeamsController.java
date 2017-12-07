@@ -1,8 +1,6 @@
 package com.teskekarol.footballstats.Controller;
 
-import com.teskekarol.footballstats.Entity.Footballer;
 import com.teskekarol.footballstats.Entity.Team;
-import com.teskekarol.footballstats.Service.FootballerService;
 import com.teskekarol.footballstats.Service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,4 +26,6 @@ public class TeamsController {
     public Team getById(@PathVariable int id){
         return teamsService.getTeamById(id);
     }
+
+
 }

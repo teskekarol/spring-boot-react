@@ -1,6 +1,9 @@
 package com.teskekarol.footballstats.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +14,8 @@ public class Footballer {
     public Footballer() {
     }
 
-    public Footballer(String name, int age) {
+    public Footballer(String name, int age, Team team) {
+        this.team = new Team();
         this.name = name;
         this.age = age;
     }
@@ -28,6 +32,7 @@ public class Footballer {
 
     @ManyToOne
     @JoinColumn(name="team_id")
+    @JsonManagedReference
     private Team team;
 
     public Long getId() {
@@ -53,4 +58,13 @@ public class Footballer {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
 }

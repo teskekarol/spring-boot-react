@@ -3,12 +3,11 @@ package com.teskekarol.footballstats.Controller;
 import com.teskekarol.footballstats.Entity.Footballer;
 import com.teskekarol.footballstats.Service.FootballerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Set;
@@ -23,11 +22,38 @@ public class FootballersController {
 
     @GetMapping("/")
     public ResponseEntity<Set<Footballer>> getAll(){
-        return new ResponseEntity<Set<Footballer>>(footballerService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(footballerService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/")
     public Footballer getById(@PathVariable int id){
         return footballerService.getFootballerById(id);
     }
+
+    @PostMapping("/")
+    public ResponseEntity<Void> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
+        System.out.println("Creating new user");
+
+        footballerService.save(footballer);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("footballers/{id}").buildAndExpand(footballer.getId()).toUri());
+
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+
+    @DeleteMapping(value = "/{id}/")
+    public  ResponseEntity<Footballer> deleteUser(@PathVariable("id") int id) {
+        System.out.println("Fetching & Deleting Footballer with id " + id);
+
+        Footballer footballer = footballerService.getFootballerById(id);
+        if (footballer == null) {
+            System.out.println("Unable to delete. User with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        System.out.println("deleting: " + footballer.getName());
+        footballerService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

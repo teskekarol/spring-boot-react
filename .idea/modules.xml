@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/spring-boot-react.iml" filepath="$PROJECT_DIR$/.idea/spring-boot-react.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-react_main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-react_main.iml" group="spring-boot-react" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-react_test.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-react_test.iml" group="spring-boot-react" />
+    </modules>
+  </component>
+</project>

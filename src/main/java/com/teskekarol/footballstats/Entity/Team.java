@@ -1,20 +1,23 @@
 package com.teskekarol.footballstats.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="team")
 public class Team {
     public Team() {
+        name = "no team";
+        footballers = new ArrayList<>();
     }
 
-    public Team(String name, LocalDate createDate, List<Footballer> footballers) {
-        this.name = name;
-        this.footballers = footballers;
-    }
+
 
     @Id
     @GeneratedValue
@@ -23,8 +26,10 @@ public class Team {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Footballer> footballers;
+
 
     public Long getId() {
         return id;
