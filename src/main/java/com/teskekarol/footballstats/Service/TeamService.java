@@ -25,4 +25,8 @@ public class TeamService {
     public Team getTeamById(int id) {
         return teamRepository.findOne(Long.valueOf(id));
     }
+
+    public void save(Team team) {
+        teamRepository.save(team);
+    }
 }

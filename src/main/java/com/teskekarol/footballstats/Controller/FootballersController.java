@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class FootballersController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
+    @ResponseBody  public ResponseEntity<Void> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
         System.out.println("Creating new user");
 
         footballerService.save(footballer);
@@ -56,4 +57,16 @@ public class FootballersController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping(value = "/")
+    public ResponseEntity<Footballer> updateFootballer(@RequestBody Footballer footballer){
+        System.out.println("to update id: " + footballer.getId());
+        System.out.println("to update name: " + footballer.getName());
+        if(footballerService.update(footballer) == 0)
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        else{
+            System.out.println("Not done!");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }

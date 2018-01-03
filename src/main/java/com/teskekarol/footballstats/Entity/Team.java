@@ -1,7 +1,9 @@
 package com.teskekarol.footballstats.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,8 +19,6 @@ public class Team {
         footballers = new ArrayList<>();
     }
 
-
-
     @Id
     @GeneratedValue
     private Long id;
@@ -26,10 +26,9 @@ public class Team {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @OneToMany(mappedBy = "team")
+    @JsonManagedReference
     private List<Footballer> footballers;
-
 
     public Long getId() {
         return id;
@@ -46,7 +45,6 @@ public class Team {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public List<Footballer> getFootballers() {
         return footballers;
