@@ -40,16 +40,19 @@ public class FootballerService {
     }
 
     public int update(Footballer footballer) {
-        Footballer oldFootballer = footballerRepository.findOne(footballer.getId());
-        if(oldFootballer != null){
-            Team oldTeam = teamRepository.findOne(oldFootballer.getTeam().getId());
-            if(oldTeam == null) {
+        Footballer footballerFromDB = footballerRepository.findOne(footballer.getId());
+        if(footballerFromDB != null){
+            Team teamFromDB = teamRepository.findOne(footballerFromDB.getTeam().getId());
+            if(teamFromDB == null || footballer.getTeam()== null) {
                 System.out.println("Team with id " + footballer.getId() + " doesn't exist, cancelled");
                 return -1;
             }
-            footballer.setTeam(oldTeam);
-            oldTeam.getFootballers().add(footballer);
-            teamRepository.save(oldTeam);
+            System.out.println("Changing " + footballer.getName() + " team from " + footballerFromDB.getTeam().getName()
+              + " to: " + footballer.getTeam().getId());
+
+            footballer.setTeam(teamFromDB);
+            teamFromDB.getFootballers().add(footballer);
+            teamRepository.save(teamFromDB);
             footballerRepository.save(footballer);
             return 0;
         }else {

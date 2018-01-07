@@ -29,4 +29,8 @@ public class TeamService {
     public void save(Team team) {
         teamRepository.save(team);
     }
+
+    public void deleteTeamById(int id) {
+        teamRepository.delete(Long.valueOf(id));
+    }
 }

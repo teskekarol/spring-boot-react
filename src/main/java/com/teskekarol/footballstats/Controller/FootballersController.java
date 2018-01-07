@@ -16,10 +16,12 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/footballers")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FootballersController {
 
     @Autowired
     FootballerService footballerService;
+
 
     @GetMapping("/")
     public ResponseEntity<Set<Footballer>> getAll(){
@@ -49,7 +51,7 @@ public class FootballersController {
 
         Footballer footballer = footballerService.getFootballerById(id);
         if (footballer == null) {
-            System.out.println("Unable to delete. User with id " + id + " not found");
+            System.out.println("Unable to delete. Footballer with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         System.out.println("deleting: " + footballer.getName());
@@ -61,11 +63,12 @@ public class FootballersController {
     public ResponseEntity<Footballer> updateFootballer(@RequestBody Footballer footballer){
         System.out.println("to update id: " + footballer.getId());
         System.out.println("to update name: " + footballer.getName());
-        if(footballerService.update(footballer) == 0)
+        if(footballerService.update(footballer) == 0) {
+            System.out.println("Updating");
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
-
+        }
         else{
-            System.out.println("Not done!");
+            System.out.println("Updating cant be finished!");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
