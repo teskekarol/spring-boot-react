@@ -29,10 +29,10 @@ public class FootballerService {
     }
 
 
-    public void save(Footballer footballer) {
+    public Footballer save(Footballer footballer) {
         System.out.println("Saving footballer name: " + footballer.getName());
         System.out.println("Saving footballer age: " + footballer.getAge());
-        footballerRepository.save(footballer);
+        return footballerRepository.save(footballer);
     }
 
     public void deleteUserById(int id) {

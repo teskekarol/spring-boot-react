@@ -45,7 +45,7 @@ public class TeamsController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}/")
     public ResponseEntity<Team> deleteTeam(@PathVariable int id){
         System.out.println("Fetching & Deleting Team with id " + id);
         Team team = teamsService.getTeamById(id);

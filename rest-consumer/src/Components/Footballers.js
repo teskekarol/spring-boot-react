@@ -14,7 +14,6 @@ class Footballers extends Component{
 
     componentDidMount(){
         var that = this;
-        this.setState({name: "karol"})
         fetch('http://localhost:8080/api/footballers/')
         .then(function(response){
             console.log(response.status);
@@ -34,6 +33,7 @@ class Footballers extends Component{
 
     addFootballer(newFootballer){
         this.state.footballers.push(newFootballer);
+        console.log("updating state")
         this.setState({
             footballers : this.state.footballers
         })
@@ -76,24 +76,3 @@ class Footballers extends Component{
 } 
 
 export default Footballers;
-
-/**
-  componentDidMount(){
-        var that = this;
-        this.setState({name: "karol"})
-        fetch('http://localhost:8080/api/footballers/14/')
-        .then(function(response){
-            console.log(response.status);
-            if(response.status >= 400){
-                throw new Error("Bad response > 400");
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            that.setState({name: data.name})
-          })
-          .catch((err) => {
-              return console.log(err)
-          })
-    }
- */

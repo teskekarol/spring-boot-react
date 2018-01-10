@@ -34,14 +34,15 @@ public class FootballersController {
     }
 
     @PostMapping("/")
-    @ResponseBody  public ResponseEntity<Void> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
+    @ResponseBody  public ResponseEntity<Long> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
         System.out.println("Creating new user");
-
-        footballerService.save(footballer);
+        footballer = footballerService.save(footballer);
         HttpHeaders headers = new HttpHeaders();
+        headers.set("footballerid", String.valueOf(footballer.getId()));
+        System.out.println("saved footbaler id: " + footballer.getId());
         headers.setLocation(ucBuilder.path("footballers/{id}").buildAndExpand(footballer.getId()).toUri());
-
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        headers.set("Access-Control-Expose-Headers", "Date, location, footballerid");
+        return new ResponseEntity<>(Long.valueOf(footballer.getId()),headers, HttpStatus.CREATED);
     }
 
 
