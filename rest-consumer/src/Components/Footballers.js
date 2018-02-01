@@ -10,7 +10,6 @@ class Footballers extends Component{
             teams: []
         }
         this.deleteFootballer = this.deleteFootballer.bind(this);
-        this.addFootballer = this.addFootballer.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -26,13 +25,7 @@ class Footballers extends Component{
         this.setState({})
     }
 
-    addFootballer(newFootballer){
-        this.state.footballers.push(newFootballer);
-        console.log("updating state")
-        this.setState({
-            footballers : this.state.footballers
-        })
-    }
+    
 
     deleteFootballer(id){
         console.log("pressed" + id)
@@ -70,7 +63,7 @@ class Footballers extends Component{
 
                 <button onClick={this.echostate.bind(this)}>footballers.js state</button>
 
-                <FootballerForm teamOptions={this.state.teams} addFootballer={this.addFootballer}/>
+                <FootballerForm teamOptions={this.state.teams} addFootballer={this.props.addFootballer}/>
             </div>
         )
     }

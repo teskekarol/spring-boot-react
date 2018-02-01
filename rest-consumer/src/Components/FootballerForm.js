@@ -12,40 +12,15 @@ class FootballerForm extends Component {
                 id: 0
             }
         }
-
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangeAge = this.handleChangeAge.bind(this);
         this.handleChangeTeam = this.handleChangeTeam.bind(this);
+        this.handleAddFootballer = this.handleAddFootballer.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
         this.setState({teamOptions: nextProps.teamOptions})
     }
-
-    handleSubmit(event) {
-        let newId;
-        event.preventDefault();
-        console.log(this.state)
-
-        fetch('http://localhost:8080/api/footballers/', {
-         method: 'post',
-         headers: {'Content-Type':'application/json'},
-         body: JSON.stringify(this.state)
-        }).then((res) => {
-            newId = res.headers.get('footballerid')
-            this.setState({
-                id: newId
-            })
-            this.props.addFootballer(this.state);
-            this.setState({
-                name: '',
-                age: 0
-            })
-        });
-
-        
-      }
 
     handleChangeName(event) {
         this.setState({name: event.target.value});
@@ -58,19 +33,20 @@ class FootballerForm extends Component {
         this.setState({team: event.target.value});
       }
 
+    handleAddFootballer(event){
+        event.preventDefault();
+        this.props.addFootballer(this.state.name,this.state.age,this.state.team.id)
+        this.setState({name: '',age: 0})
+    }
+
     render(){
 
         const createItem = (item, key) =>
-        <option
-          key={key}
-          value={item.id}
-        >
-          {item.name}
-        </option>;
+        <option key={key}value={item.id}> {item.name} </option>;
 
         return(
             <div>
-            <form onSubmit={this.handleSubmit} id="addfootballer">
+            <form onSubmit={this.handleAddFootballer} id="addfootballer">
                 <label>
                 Name:
                     <input type="text" value={this.state.name} onChange={this.handleChangeName} />

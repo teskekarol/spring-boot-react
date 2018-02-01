@@ -9,19 +9,18 @@ class App extends Component {
     super(props)
     this.state = {
       footballers: [],
-      teams: [],
-      id: 3
+      teams: []
     }
 
     this.echostate = this.echostate.bind(this);
     this.handleAddNewTeam = this.handleAddNewTeam.bind(this);
     this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
+    this.addFootballer = this.addFootballer.bind(this);
   }
   
   componentDidMount(){
     fetch('http://localhost:8080/api/footballers/')
       .then(response => {
-          console.log("resp fro footbersget in app" + response.status);
           if(response.status >= 400){
               throw new Error("Bad response > 400");
           }
@@ -37,7 +36,6 @@ class App extends Component {
 
       fetch('http://localhost:8080/api/teams/')
       .then(response => {
-          console.log("response from teamget in app " + response.status);
           if(response.status >= 400){
               throw new Error("Bad response > 400");
           }
@@ -62,6 +60,8 @@ class App extends Component {
     console.log("succes")
   }
 
+  
+
   handleDeleteTeam(id){
     console.log("deleting " + id)
 
@@ -79,7 +79,6 @@ class App extends Component {
         console.log(removed)
         this.setState({teams : removed})
       })
-
   }
 
   handleAddNewTeam(newTeamName){
@@ -88,13 +87,32 @@ class App extends Component {
       method: 'post',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({name: newTeamName})
-     }).then(res => {
+     }).then((response) => response.json())
+        .then(res => {
          newId = res.headers.get('teamid')
          this.setState(prevState => ({
           teams: [...prevState.teams, {id: newId, name: newTeamName}]
         }))
 
      });
+  }
+
+  addFootballer(newName, newAge,newTeamId) {
+    console.log("app js: " + newName)
+    let newId;
+    let team = {name: newName, age: newAge, team: {id: newTeamId}}
+    console.log(JSON.stringify(team))
+    fetch('http://localhost:8080/api/footballers/', {
+     method: 'post',
+     headers: {'Content-Type':'application/json'},
+     body: JSON.stringify({name: newName, age: newAge, team: {id: newTeamId}})
+    }).then((res) => {
+        newId = res.headers.get('footballerid')
+        this.setState(prevState => ({
+          footballers: [...prevState.footballers, {id: newId, name: newName, age: newAge, team: {id: newTeamId}}]
+        }))
+        this.forceUpdate()
+    });
   }
 
   render() {
@@ -105,8 +123,9 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <button onClick={this.echostate}>app.state</button>
-        <Footballers att={{footballers: this.state.footballers, teams: this.state.teams}}/>
-        <Teams teams={this.state.teams} handleAddNewTeam={this.handleAddNewTeam} handleDeleteTeam={this.handleDeleteTeam}/>
+        <Footballers att={{footballers: this.state.footballers, teams: this.state.teams}} addFootballer={this.addFootballer}/>
+
+        <Teams att={{team: this.state.teams}} handleAddNewTeam={this.handleAddNewTeam} handleDeleteTeam={this.handleDeleteTeam}/>
       </div>
     );
   }

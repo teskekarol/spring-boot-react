@@ -8,34 +8,49 @@ class Teams extends Component {
         this.state = { 
              teams: []
         }
-    
+
+        this.echostate = this.echostate.bind(this)
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps(nextProps){
+        console.log("fired up")
+        this.setState(this.state);
         this.setState({
-            teams: this.props.teams
+            teams: nextProps.att.team
         })
+        this.forceUpdate()
+        
+        console.log(this.state.teams)
     }
 
-    addTeam(nameTeamToAdd){
-        console.log("team to add: " + nameTeamToAdd)
+    componentDidMount(){
+        this.setState({})
     }
+
+    echostate(){
+        console.log(this.state)
+      }
 
     render() {
         return (
           <div className="Teams">
             <p>Teams</p>
+            <button onClick={this.echostate}>teams.state</button>
             <table id="teams">
                 <tbody>
                         <tr>
                             <th>Team id</th>
                             <th>Team name</th>
+                            <th>Footballers</th>
                         </tr>
             {
-                this.props.teams.map((team,key) => 
+                 this.state.teams.map((team,key) => 
                         <tr key={key} className={ (key%2) ? "a" : "b" }>
                             <td>{team.id}</td>
                             <td>{team.name}</td>
+                            {team.footballers ? <td>{team.footballers.map((a,key) =>
+                                 <p key={key}>{a.name}</p>
+                            )}</td> : <td></td>}
                             <td><button onClick={()=>this.props.handleDeleteTeam(team.id)}>x</button></td>
                         </tr>
                 )
