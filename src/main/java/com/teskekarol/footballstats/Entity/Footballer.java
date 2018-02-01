@@ -69,4 +69,13 @@ public class Footballer {
         this.team = team;
     }
 
+    @Override
+    public String toString() {
+        return "Footballer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", team=" + team +
+                '}';
+    }
 }

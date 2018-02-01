@@ -38,10 +38,12 @@ public class TeamsController {
     @ResponseBody  public ResponseEntity<Void> addNewFootballer(@RequestBody Team team, UriComponentsBuilder ucBuilder){
         System.out.println("Creating new team");
 
-        teamsService.save(team);
+        team = teamsService.save(team);
         HttpHeaders headers = new HttpHeaders();
+        headers.set("teamid", String.valueOf(team.getId()));
+        System.out.println("saved team id: " + team.getId());
         headers.setLocation(ucBuilder.path("teams/{id}").buildAndExpand(team.getId()).toUri());
-
+        headers.set("Access-Control-Expose-Headers", "Date, location, teamid");
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 

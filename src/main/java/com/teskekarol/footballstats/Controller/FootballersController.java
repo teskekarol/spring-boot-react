@@ -35,7 +35,8 @@ public class FootballersController {
 
     @PostMapping("/")
     @ResponseBody  public ResponseEntity<Long> addNewFootballer(@RequestBody Footballer footballer, UriComponentsBuilder ucBuilder){
-        System.out.println("Creating new user");
+        System.out.println("Creating new footballer");
+        System.out.println("Footballer from request: " + footballer.toString());
         footballer = footballerService.save(footballer);
         HttpHeaders headers = new HttpHeaders();
         headers.set("footballerid", String.valueOf(footballer.getId()));

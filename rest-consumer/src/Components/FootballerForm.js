@@ -1,61 +1,33 @@
 import React, { Component } from 'react';
-export const Options = ({options}) => (
-    <select formid="addfootballer">
-    {
-        options.map((option, i) => 
-            <option key={i} value={option.value}>{option.text}</option>
-    )}
-    </select>
-)
 
 class FootballerForm extends Component { 
     constructor(){
         super();
         this.state = {
+            teamOptions: [],
             id: 0,
             name : '',
             age : 0,
-            teamOptions: [{
-                "text"  : "Option 1",
-                "value" : "Value 1"
-              },
-              {
-                "text"     : "Option 2",
-                "value"    : "Value 2",
-                "selected" : true
-              },
-              {
-                "text"  : "Option 3",
-                "value" : "Value 3"
-              }]
+            team: {
+                id: 0
+            }
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangeAge = this.handleChangeAge.bind(this);
+        this.handleChangeTeam = this.handleChangeTeam.bind(this);
     }
 
-    componentDidMount(){
-        fetch('http://localhost:8080/api/teams/')
-        .then(function(response){
-            console.log(response.status);
-            if(response.status >= 400){
-                throw new Error("Bad response > 400");
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            console.log("TEAMS")
-            console.log(data)
-          })
-          .catch((err) => {
-              return console.log(err)
-          })
+    componentWillReceiveProps(nextProps){
+        this.setState({teamOptions: nextProps.teamOptions})
     }
 
     handleSubmit(event) {
         let newId;
         event.preventDefault();
+        console.log(this.state)
+
         fetch('http://localhost:8080/api/footballers/', {
          method: 'post',
          headers: {'Content-Type':'application/json'},
@@ -81,8 +53,21 @@ class FootballerForm extends Component {
     handleChangeAge(event) {
         this.setState({age: event.target.value});
       }
+    handleChangeTeam(event) {
+        console.log("hello");
+        this.setState({team: event.target.value});
+      }
 
     render(){
+
+        const createItem = (item, key) =>
+        <option
+          key={key}
+          value={item.id}
+        >
+          {item.name}
+        </option>;
+
         return(
             <div>
             <form onSubmit={this.handleSubmit} id="addfootballer">
@@ -91,14 +76,16 @@ class FootballerForm extends Component {
                     <input type="text" value={this.state.name} onChange={this.handleChangeName} />
                     <input type="text" value={this.state.age} onChange={this.handleChangeAge} />
                 </label>
+                <select onChange={event => this.setState({ team: {id: event.target.value}})} value={this.state.value}>
+                    { this.state.teamOptions.map(createItem) }
+                </select>
                 <input type="submit" value="Submit" />
-          </form>
-          
-          <Options options={this.state.teamOptions}/>
-
+            </form>
           </div>
         );
     }
 }
+
+
 
 export default FootballerForm;

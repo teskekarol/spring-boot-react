@@ -3,32 +3,27 @@ import FootballerForm from './FootballerForm'
 
 class Footballers extends Component{
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            footballers: []
+            footballers: [],
+            teams: []
         }
         this.deleteFootballer = this.deleteFootballer.bind(this);
         this.addFootballer = this.addFootballer.bind(this);
     }
 
+    componentWillReceiveProps(nextProps){
+        
+        console.log("prop.team " + nextProps.att.teams.length )
+        console.log("prop foot " + nextProps.att.footballers.length )
+
+        this.setState({footballers: nextProps.att.footballers})
+        this.setState({teams: nextProps.att.teams})
+    }
+
     componentDidMount(){
-        var that = this;
-        fetch('http://localhost:8080/api/footballers/')
-        .then(function(response){
-            console.log(response.status);
-            if(response.status >= 400){
-                throw new Error("Bad response > 400");
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            console.log(data)
-            that.setState({footballers: data})
-          })
-          .catch((err) => {
-              return console.log(err)
-          })
+        this.setState({})
     }
 
     addFootballer(newFootballer){
@@ -58,6 +53,10 @@ class Footballers extends Component{
             })
     }
 
+    echostate(){
+        console.log(this.state)
+      }
+
     render(){
         return (
             <div>
@@ -69,7 +68,9 @@ class Footballers extends Component{
                     </div>
                 ))}
 
-                <FootballerForm addFootballer={this.addFootballer}/>
+                <button onClick={this.echostate.bind(this)}>footballers.js state</button>
+
+                <FootballerForm teamOptions={this.state.teams} addFootballer={this.addFootballer}/>
             </div>
         )
     }

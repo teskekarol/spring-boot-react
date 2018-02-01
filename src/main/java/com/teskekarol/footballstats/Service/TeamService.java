@@ -1,14 +1,11 @@
 package com.teskekarol.footballstats.Service;
 
-import com.teskekarol.footballstats.Entity.Footballer;
 import com.teskekarol.footballstats.Entity.Team;
 import com.teskekarol.footballstats.Repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,8 +23,8 @@ public class TeamService {
         return teamRepository.findOne(Long.valueOf(id));
     }
 
-    public void save(Team team) {
-        teamRepository.save(team);
+    public Team save(Team team) {
+        return teamRepository.save(team);
     }
 
     public void deleteTeamById(int id) {
