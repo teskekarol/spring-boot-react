@@ -13,7 +13,7 @@ class TeamForm extends Component {
 
     handleAddTeam(event) {
         event.preventDefault();
-        this.props.addTeam(this.state.name)
+        this.props.addTeam(this.state.name,event)
         this.setState({name: ''})
     }
 

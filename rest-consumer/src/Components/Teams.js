@@ -8,17 +8,18 @@ class Teams extends Component {
         this.state = { 
              teams: []
         }
-
+        
         this.echostate = this.echostate.bind(this)
     }
 
+    
+
     componentWillReceiveProps(nextProps){
-        console.log("fired up")
+        console.log("new props" + nextProps)
         this.setState(this.state);
         this.setState({
-            teams: nextProps.att.team
+            teams: nextProps.team
         })
-        this.forceUpdate()
         
         console.log(this.state.teams)
     }
@@ -62,6 +63,10 @@ class Teams extends Component {
           </div>
         )
       }
+}
+
+Teams.defaultProps = {
+    teams: []
 }
 
 export default Teams
